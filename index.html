@@ -3,68 +3,93 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LeadPulse — Client Setup Questionnaire</title>
+  <title>LeadPulse — Set Up Your Follow-Up System</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #1a1a1a; min-height: 100vh; }
-
-    .page { max-width: 640px; margin: 0 auto; padding: 40px 24px 80px; }
+    .page { max-width: 620px; margin: 0 auto; padding: 40px 24px 80px; }
 
     /* Header */
-    .header { margin-bottom: 40px; }
-    .logo { font-size: 17px; font-weight: 700; color: #1a1a1a; margin-bottom: 24px; }
+    .logo { font-size: 17px; font-weight: 700; color: #1a1a1a; margin-bottom: 32px; }
     .logo span { color: #16a370; }
-    .header-title { font-size: 28px; font-weight: 800; color: #1a1a1a; letter-spacing: -.5px; margin-bottom: 10px; line-height: 1.2; }
-    .header-sub { font-size: 15px; color: #666; line-height: 1.6; margin-bottom: 20px; }
-    .time-badge { display: inline-flex; align-items: center; gap: 6px; background: #f0fdf8; border: 1px solid #bbf7d0; border-radius: 99px; padding: 5px 14px; font-size: 13px; color: #166534; font-weight: 500; }
+
+    /* Outcome framing hero */
+    .hero { background: #fff; border: 1px solid #eee; border-radius: 14px; padding: 24px 26px; margin-bottom: 32px; }
+    .hero-title { font-size: 22px; font-weight: 800; color: #1a1a1a; letter-spacing: -.4px; margin-bottom: 10px; line-height: 1.25; }
+    .hero-sub { font-size: 14px; color: #666; line-height: 1.7; margin-bottom: 16px; }
+    .hero-bullets { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; }
+    .hero-bullet { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; color: #444; line-height: 1.5; }
+    .hero-bullet-dot { width: 18px; height: 18px; background: #f0fdf8; border: 1px solid #bbf7d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .hero-bullet-dot svg { width: 10px; height: 10px; }
+    .time-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .time-badge { display: inline-flex; align-items: center; gap: 5px; background: #f0fdf8; border: 1px solid #bbf7d0; border-radius: 99px; padding: 5px 13px; font-size: 12px; color: #166534; font-weight: 600; }
+    .step-badge { display: inline-flex; align-items: center; gap: 5px; background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 99px; padding: 5px 13px; font-size: 12px; color: #6b21a8; font-weight: 600; }
 
     /* Progress */
-    .progress-wrap { margin-bottom: 32px; }
+    .progress-wrap { margin-bottom: 28px; }
     .progress-labels { display: flex; justify-content: space-between; margin-bottom: 8px; }
-    .progress-label { font-size: 11px; font-weight: 600; color: #bbb; text-transform: uppercase; letter-spacing: .05em; }
+    .progress-label { font-size: 10px; font-weight: 700; color: #ccc; text-transform: uppercase; letter-spacing: .05em; transition: color .2s; }
     .progress-label.active { color: #7c3aed; }
-    .progress-track { height: 4px; background: #eee; border-radius: 99px; overflow: hidden; }
-    .progress-fill { height: 100%; background: #7c3aed; border-radius: 99px; transition: width .4s ease; }
+    .progress-label.done { color: #16a370; }
+    .progress-track { height: 3px; background: #eee; border-radius: 99px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #16a370, #7c3aed); border-radius: 99px; transition: width .4s ease; }
 
     /* Sections */
     .section { display: none; }
     .section.active { display: block; }
     .section-eyebrow { font-size: 10px; font-weight: 700; color: #7c3aed; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
-    .section-title { font-size: 20px; font-weight: 800; color: #1a1a1a; letter-spacing: -.3px; margin-bottom: 6px; }
-    .section-sub { font-size: 13px; color: #888; margin-bottom: 28px; line-height: 1.5; }
+    .section-title { font-size: 20px; font-weight: 800; color: #1a1a1a; letter-spacing: -.3px; margin-bottom: 5px; }
+    .section-sub { font-size: 13px; color: #888; margin-bottom: 24px; line-height: 1.6; }
+    .section-insight { background: #faf5ff; border-left: 3px solid #7c3aed; border-radius: 0 6px 6px 0; padding: 9px 13px; margin-bottom: 20px; font-size: 12px; color: #6b21a8; line-height: 1.6; display: none; }
+    .section-insight.visible { display: block; }
 
     /* Fields */
-    .field { margin-bottom: 20px; }
-    .field-label { font-size: 14px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; display: block; line-height: 1.4; }
-    .field-hint { font-size: 12px; color: #aaa; margin-bottom: 6px; display: block; font-style: italic; }
+    .field { margin-bottom: 18px; }
+    .field-label { font-size: 14px; font-weight: 600; color: #1a1a1a; margin-bottom: 5px; display: block; line-height: 1.4; }
+    .field-hint { font-size: 12px; color: #aaa; margin-bottom: 6px; display: block; }
     .optional { font-size: 11px; font-weight: 400; color: #bbb; margin-left: 4px; }
+    .req { color: #dc2626; margin-left: 2px; }
 
     input[type=text], input[type=email], input[type=tel], textarea {
-      width: 100%; font-size: 14px; padding: 11px 13px; border-radius: 8px;
+      width: 100%; font-size: 14px; padding: 10px 12px; border-radius: 8px;
       border: 1.5px solid #eee; background: #fff; color: #1a1a1a;
       font-family: inherit; transition: border-color .15s; line-height: 1.5;
     }
     input[type=text]:focus, input[type=email]:focus, input[type=tel]:focus, textarea:focus {
       outline: none; border-color: #7c3aed;
     }
-    textarea { min-height: 90px; resize: vertical; }
+    textarea { min-height: 85px; resize: vertical; }
 
-    .radio-group, .check-group { display: flex; flex-direction: column; gap: 8px; }
-    .radio-opt, .check-opt {
-      display: flex; align-items: center; gap: 10px; padding: 11px 14px;
+    .radio-group, .check-group { display: flex; flex-direction: column; gap: 7px; }
+    .radio-opt {
+      display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px;
       border: 1.5px solid #eee; border-radius: 8px; cursor: pointer;
       transition: all .15s; background: #fff;
     }
-    .radio-opt:hover, .check-opt:hover { border-color: #7c3aed; background: #faf5ff; }
-    .radio-opt.selected, .check-opt.selected { border-color: #7c3aed; background: #faf5ff; }
-    .radio-opt input, .check-opt input { accent-color: #7c3aed; width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; }
-    .radio-opt label, .check-opt label { font-size: 14px; color: #1a1a1a; cursor: pointer; line-height: 1.4; }
+    .radio-opt:hover { border-color: #7c3aed; background: #faf5ff; }
+    .radio-opt.selected { border-color: #7c3aed; background: #faf5ff; }
+    .radio-opt input { accent-color: #7c3aed; width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; margin-top: 2px; }
+    .radio-opt-content { flex: 1; }
+    .radio-opt-label { font-size: 14px; color: #1a1a1a; cursor: pointer; line-height: 1.4; font-weight: 500; }
+    .radio-opt-sub { font-size: 12px; color: #999; margin-top: 2px; line-height: 1.4; }
+    .radio-opt-insight { font-size: 11px; color: #7c3aed; margin-top: 4px; display: none; font-style: italic; }
+    .radio-opt.selected .radio-opt-insight { display: block; }
 
     .custom-input-wrap { margin-top: 8px; display: none; }
     .custom-input-wrap.visible { display: block; }
 
-    /* Navigation */
-    .nav { display: flex; align-items: center; justify-content: space-between; margin-top: 32px; }
+    /* Example email field — hero treatment */
+    .example-field { background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 10px; padding: 16px; margin-bottom: 18px; }
+    .example-field-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+    .example-icon { width: 32px; height: 32px; background: #fef9c3; border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .example-icon svg { width: 16px; height: 16px; }
+    .example-field-title { font-size: 14px; font-weight: 700; color: #92400e; margin-bottom: 2px; }
+    .example-field-sub { font-size: 12px; color: #a16207; line-height: 1.5; }
+    .example-field textarea { border-color: #fde68a; background: #fff; min-height: 110px; }
+    .example-field textarea:focus { border-color: #d97706; }
+
+    /* Nav */
+    .nav { display: flex; align-items: center; justify-content: space-between; margin-top: 28px; }
     .btn { font-size: 14px; padding: 11px 22px; border-radius: 8px; border: 1.5px solid #ddd; background: #fff; color: #1a1a1a; cursor: pointer; font-family: inherit; font-weight: 600; transition: all .15s; }
     .btn:hover { background: #f5f5f5; }
     .btn-primary { background: #7c3aed; color: #fff; border-color: #7c3aed; box-shadow: 0 4px 12px rgba(124,58,237,.25); }
@@ -73,46 +98,65 @@
     .btn-ghost:hover { background: #f5f5f5; color: #1a1a1a; }
     .step-counter { font-size: 13px; color: #bbb; font-weight: 500; }
 
-    /* Confirmation screen */
-    .confirm-screen { display: none; text-align: center; padding: 40px 0; }
+    /* Confirmation */
+    .confirm-screen { display: none; }
     .confirm-screen.active { display: block; }
-    .confirm-icon { width: 64px; height: 64px; background: #f0fdf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; border: 2px solid #bbf7d0; }
-    .confirm-icon svg { width: 28px; height: 28px; }
+    .confirm-top { text-align: center; padding: 32px 0 28px; }
+    .confirm-check { width: 72px; height: 72px; background: #f0fdf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; border: 2px solid #bbf7d0; }
+    .confirm-check svg { width: 32px; height: 32px; }
     .confirm-title { font-size: 26px; font-weight: 800; color: #1a1a1a; letter-spacing: -.4px; margin-bottom: 10px; }
-    .confirm-sub { font-size: 15px; color: #666; line-height: 1.7; margin-bottom: 28px; }
-    .confirm-steps { background: #fafafa; border: 1px solid #eee; border-radius: 12px; padding: 20px 24px; text-align: left; margin-bottom: 24px; }
+    .confirm-sub { font-size: 15px; color: #666; line-height: 1.7; max-width: 420px; margin: 0 auto 28px; }
+    .confirm-card { background: #fff; border: 1px solid #eee; border-radius: 14px; padding: 22px 24px; margin-bottom: 16px; }
+    .confirm-card-title { font-size: 13px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 14px; }
     .confirm-step { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
     .confirm-step:last-child { margin-bottom: 0; }
-    .confirm-step-num { width: 24px; height: 24px; background: #7c3aed; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-    .confirm-step-text { font-size: 14px; color: #444; line-height: 1.5; }
+    .confirm-num { width: 26px; height: 26px; background: #7c3aed; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .confirm-step-text { font-size: 14px; color: #444; line-height: 1.55; padding-top: 3px; }
     .confirm-step-text strong { color: #1a1a1a; font-weight: 600; }
+    .confirm-note { font-size: 13px; color: #aaa; text-align: center; line-height: 1.7; }
 
-    /* Divider */
-    .divider { border: none; border-top: 1px solid #f0f0f0; margin: 24px 0; }
-
-    /* Required star */
-    .req { color: #dc2626; margin-left: 2px; }
+    .divider { border: none; border-top: 1px solid #f0f0f0; margin: 20px 0; }
 
     @media (max-width: 480px) {
-      .page { padding: 24px 16px 60px; }
-      .header-title { font-size: 22px; }
-      .progress-label { font-size: 9px; }
+      .page { padding: 20px 16px 60px; }
+      .hero-title { font-size: 19px; }
+      .section-title { font-size: 18px; }
     }
   </style>
 </head>
 <body>
 <div class="page">
 
-  <div class="header">
-    <div class="logo">Lead<span>Pulse</span></div>
-    <div class="header-title">Let's build your follow-up system</div>
-    <div class="header-sub">Answer a few quick questions so we can customize LeadPulse to match your business, your voice, and the way you sell.</div>
-    <div class="time-badge">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      Takes 2–4 minutes
+  <div class="logo">Lead<span>Pulse</span></div>
+
+  <!-- Outcome framing hero -->
+  <div class="hero">
+    <div class="hero-title">Let's customize your follow-up system</div>
+    <div class="hero-sub">This takes 2 minutes. Your answers are used to make LeadPulse sound like you — so every email it generates matches your voice, your industry, and the way you actually sell.</div>
+    <div class="hero-bullets">
+      <div class="hero-bullet">
+        <div class="hero-bullet-dot"><svg viewBox="0 0 12 12" fill="none" stroke="#16a370" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>
+        Your emails will reference your actual business — not generic filler
+      </div>
+      <div class="hero-bullet">
+        <div class="hero-bullet-dot"><svg viewBox="0 0 12 12" fill="none" stroke="#16a370" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>
+        Your tone, your phrases, your sign-off — pre-loaded
+      </div>
+      <div class="hero-bullet">
+        <div class="hero-bullet-dot"><svg viewBox="0 0 12 12" fill="none" stroke="#16a370" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>
+        The more context you give, the better your sequences perform
+      </div>
+    </div>
+    <div class="time-row">
+      <div class="time-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        2–4 minutes
+      </div>
+      <div class="step-badge">5 quick sections</div>
     </div>
   </div>
 
+  <!-- Progress bar -->
   <div class="progress-wrap" id="progress-wrap">
     <div class="progress-labels">
       <span class="progress-label active" id="pl-1">Identity</span>
@@ -124,223 +168,272 @@
     <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:20%"></div></div>
   </div>
 
-  <!-- Section 1: Identity -->
+  <!-- SECTION 1: Identity -->
   <div class="section active" id="section-1">
     <div class="section-eyebrow">Section 1 of 5</div>
     <div class="section-title">Your identity</div>
-    <div class="section-sub">This personalizes your email signatures and sign-offs so every email feels like it came from a real person.</div>
+    <div class="section-sub">Personalizes your email signatures so every email looks like it came from a real person — not a template.</div>
 
     <div class="field">
       <label class="field-label">Full name <span class="req">*</span></label>
-      <input type="text" id="q-name" placeholder="John Smith">
+      <input type="text" id="q-name" placeholder="e.g. John Smith">
     </div>
     <div class="field">
       <label class="field-label">Company name <span class="optional">(optional)</span></label>
-      <input type="text" id="q-company" placeholder="Smith Realty Group">
+      <input type="text" id="q-company" placeholder="e.g. Smith Realty Group">
     </div>
     <div class="field">
       <label class="field-label">Email address <span class="req">*</span></label>
-      <input type="email" id="q-email" placeholder="john@smithrealty.com">
+      <input type="email" id="q-email" placeholder="e.g. john@smithrealty.com">
     </div>
     <div class="field">
       <label class="field-label">Phone number <span class="optional">(optional)</span></label>
-      <input type="tel" id="q-phone" placeholder="555-123-4567">
+      <input type="tel" id="q-phone" placeholder="e.g. 555-123-4567">
     </div>
     <div class="field">
       <label class="field-label">How do you prefer to sign off?</label>
-      <div class="radio-group" id="signoff-group">
-        <div class="radio-opt" onclick="selectRadio('signoff','first')">
-          <input type="radio" name="signoff" value="first"> <label>First name only — <em>John</em></label>
+      <div class="radio-group">
+        <div class="radio-opt" onclick="selectRadio('signoff','first',this)">
+          <input type="radio" name="signoff" value="first">
+          <div class="radio-opt-content"><div class="radio-opt-label">First name only</div><div class="radio-opt-sub">e.g. "Best, John"</div></div>
         </div>
-        <div class="radio-opt" onclick="selectRadio('signoff','full')">
-          <input type="radio" name="signoff" value="full"> <label>Full name — <em>John Smith</em></label>
+        <div class="radio-opt" onclick="selectRadio('signoff','full',this)">
+          <input type="radio" name="signoff" value="full">
+          <div class="radio-opt-content"><div class="radio-opt-label">Full name</div><div class="radio-opt-sub">e.g. "Best, John Smith"</div></div>
         </div>
-        <div class="radio-opt" onclick="selectRadio('signoff','namecompany')">
-          <input type="radio" name="signoff" value="namecompany"> <label>Name + company — <em>John Smith / Smith Realty</em></label>
+        <div class="radio-opt" onclick="selectRadio('signoff','namecompany',this)">
+          <input type="radio" name="signoff" value="namecompany">
+          <div class="radio-opt-content"><div class="radio-opt-label">Name + company</div><div class="radio-opt-sub">e.g. "Best, John Smith / Smith Realty Group"</div></div>
         </div>
-        <div class="radio-opt" onclick="selectRadio('signoff','custom')">
-          <input type="radio" name="signoff" value="custom"> <label>Custom — I'll type my own</label>
+        <div class="radio-opt" onclick="selectRadio('signoff','custom',this)">
+          <input type="radio" name="signoff" value="custom">
+          <div class="radio-opt-content"><div class="radio-opt-label">Custom</div><div class="radio-opt-sub">I'll type exactly how I sign off</div></div>
         </div>
       </div>
       <div class="custom-input-wrap" id="signoff-custom-wrap">
-        <input type="text" id="q-signoff-custom" placeholder="e.g. Best, John — Your Neighborhood Realtor">
+        <input type="text" id="q-signoff-custom" placeholder="e.g. Best, John — Your Neighborhood Realtor · 555-123-4567">
       </div>
     </div>
     <div class="field">
-      <label class="field-label">Include your phone number in follow-up emails?</label>
-      <div class="radio-group" id="phone-sig-group">
-        <div class="radio-opt" onclick="selectRadio('phone-sig','yes')">
-          <input type="radio" name="phone-sig" value="yes"> <label>Yes — add it to my signature</label>
+      <label class="field-label">Include your phone number in follow-up signatures?</label>
+      <div class="radio-group">
+        <div class="radio-opt" onclick="selectRadio('phone-sig','yes',this)">
+          <input type="radio" name="phone-sig" value="yes">
+          <div class="radio-opt-content"><div class="radio-opt-label">Yes — add it to my signature</div></div>
         </div>
-        <div class="radio-opt" onclick="selectRadio('phone-sig','no')">
-          <input type="radio" name="phone-sig" value="no"> <label>No — email only</label>
+        <div class="radio-opt" onclick="selectRadio('phone-sig','no',this)">
+          <input type="radio" name="phone-sig" value="no">
+          <div class="radio-opt-content"><div class="radio-opt-label">No — email only</div></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Section 2: Business -->
+  <!-- SECTION 2: Business -->
   <div class="section" id="section-2">
     <div class="section-eyebrow">Section 2 of 5</div>
     <div class="section-title">Your business</div>
-    <div class="section-sub">Helps the AI write emails that are relevant to what you actually sell — not generic filler.</div>
+    <div class="section-sub">Helps the AI write emails that reference what you actually sell — not generic filler that could apply to anyone.</div>
 
     <div class="field">
       <label class="field-label">What do you sell? <span class="req">*</span></label>
-      <span class="field-hint">One sentence. Plain language. e.g. "I help homeowners find the right insurance coverage at the best rate."</span>
-      <textarea id="q-what-sell" placeholder="I help..."></textarea>
+      <span class="field-hint">One sentence. Plain language. The AI uses this to make every email feel relevant to your business.</span>
+      <textarea id="q-what-sell" placeholder="e.g. I help homeowners find the right insurance coverage at the best rate&#10;e.g. I help first-time buyers find homes in their budget&#10;e.g. I help small businesses automate their sales follow-up"></textarea>
     </div>
     <div class="field">
       <label class="field-label">Industry or niche <span class="req">*</span></label>
-      <span class="field-hint">e.g. Insurance, Real Estate, Roofing, B2B SaaS, Financial Planning</span>
-      <input type="text" id="q-industry" placeholder="Real Estate">
+      <input type="text" id="q-industry" placeholder="e.g. Insurance, Real Estate, Roofing, B2B SaaS, Financial Planning, Mortgage">
     </div>
     <div class="field">
       <label class="field-label">Typical deal size <span class="optional">(optional)</span></label>
-      <div class="radio-group" id="deal-size-group">
-        <div class="radio-opt" onclick="selectRadio('deal-size','under1k')"><input type="radio" name="deal-size" value="under1k"><label>Under $1,000</label></div>
-        <div class="radio-opt" onclick="selectRadio('deal-size','1k5k')"><input type="radio" name="deal-size" value="1k5k"><label>$1,000 – $5,000</label></div>
-        <div class="radio-opt" onclick="selectRadio('deal-size','5k20k')"><input type="radio" name="deal-size" value="5k20k"><label>$5,000 – $20,000</label></div>
-        <div class="radio-opt" onclick="selectRadio('deal-size','20kplus')"><input type="radio" name="deal-size" value="20kplus"><label>$20,000+</label></div>
+      <span class="field-hint">Helps the AI calibrate urgency and tone — bigger deals need more patience, smaller deals move faster.</span>
+      <div class="radio-group">
+        <div class="radio-opt" onclick="selectRadio('deal-size','under1k',this)"><input type="radio" name="deal-size" value="under1k"><div class="radio-opt-content"><div class="radio-opt-label">Under $1,000</div></div></div>
+        <div class="radio-opt" onclick="selectRadio('deal-size','1k5k',this)"><input type="radio" name="deal-size" value="1k5k"><div class="radio-opt-content"><div class="radio-opt-label">$1,000 – $5,000</div></div></div>
+        <div class="radio-opt" onclick="selectRadio('deal-size','5k20k',this)"><input type="radio" name="deal-size" value="5k20k"><div class="radio-opt-content"><div class="radio-opt-label">$5,000 – $20,000</div></div></div>
+        <div class="radio-opt" onclick="selectRadio('deal-size','20kplus',this)"><input type="radio" name="deal-size" value="20kplus"><div class="radio-opt-content"><div class="radio-opt-label">$20,000+</div></div></div>
       </div>
     </div>
     <div class="field">
       <label class="field-label">Typical sales cycle</label>
-      <div class="radio-group" id="cycle-group">
-        <div class="radio-opt" onclick="selectRadio('cycle','sameday')"><input type="radio" name="cycle" value="sameday"><label>Same day</label></div>
-        <div class="radio-opt" onclick="selectRadio('cycle','1to3')"><input type="radio" name="cycle" value="1to3"><label>1–3 days</label></div>
-        <div class="radio-opt" onclick="selectRadio('cycle','1to2wk')"><input type="radio" name="cycle" value="1to2wk"><label>1–2 weeks</label></div>
-        <div class="radio-opt" onclick="selectRadio('cycle','2wkplus')"><input type="radio" name="cycle" value="2wkplus"><label>2+ weeks</label></div>
+      <span class="field-hint">Helps set the right pacing between follow-ups.</span>
+      <div class="radio-group">
+        <div class="radio-opt" onclick="selectRadio('cycle','sameday',this)"><input type="radio" name="cycle" value="sameday"><div class="radio-opt-content"><div class="radio-opt-label">Same day</div></div></div>
+        <div class="radio-opt" onclick="selectRadio('cycle','1to3',this)"><input type="radio" name="cycle" value="1to3"><div class="radio-opt-content"><div class="radio-opt-label">1–3 days</div></div></div>
+        <div class="radio-opt" onclick="selectRadio('cycle','1to2wk',this)"><input type="radio" name="cycle" value="1to2wk"><div class="radio-opt-content"><div class="radio-opt-label">1–2 weeks</div></div></div>
+        <div class="radio-opt" onclick="selectRadio('cycle','2wkplus',this)"><input type="radio" name="cycle" value="2wkplus"><div class="radio-opt-content"><div class="radio-opt-label">2+ weeks</div></div></div>
       </div>
     </div>
   </div>
 
-  <!-- Section 3: Voice -->
+  <!-- SECTION 3: Voice -->
   <div class="section" id="section-3">
     <div class="section-eyebrow">Section 3 of 5</div>
     <div class="section-title">Your voice</div>
-    <div class="section-sub">This is what makes your emails sound like you — not like AI. Take your time here.</div>
+    <div class="section-sub">This is what makes your emails sound like you instead of a robot. The AI uses this to match your tone exactly — not just pick a generic style.</div>
 
     <div class="field">
       <label class="field-label">How would your best client describe your communication style? <span class="req">*</span></label>
-      <span class="field-hint">e.g. "Straightforward and no-nonsense" or "Warm and easy to talk to"</span>
-      <textarea id="q-style" placeholder="My clients would say I'm..."></textarea>
+      <span class="field-hint">Think about how they'd describe you to a friend. e.g. "Straight to the point, no fluff" or "Warm and easy to talk to, always helpful"</span>
+      <textarea id="q-style" placeholder="e.g. My clients would say I'm straightforward and honest — I don't oversell, I just lay out the facts and let them decide&#10;e.g. They'd say I'm warm and easy to reach, never pushy"></textarea>
     </div>
     <div class="field">
       <label class="field-label">Which tone fits you best?</label>
-      <div class="radio-group" id="tone-group">
-        <div class="radio-opt" onclick="selectRadio('tone','casual')"><input type="radio" name="tone" value="casual"><label>Casual — relaxed, conversational, like texting</label></div>
-        <div class="radio-opt" onclick="selectRadio('tone','professional')"><input type="radio" name="tone" value="professional"><label>Professional — polished, clear, business-like</label></div>
-        <div class="radio-opt" onclick="selectRadio('tone','friendly')"><input type="radio" name="tone" value="friendly"><label>Friendly — warm, approachable, personal</label></div>
-        <div class="radio-opt" onclick="selectRadio('tone','direct')"><input type="radio" name="tone" value="direct"><label>Direct — straight to the point, no fluff</label></div>
+      <div class="radio-group">
+        <div class="radio-opt" onclick="selectRadio('tone','casual',this)"><input type="radio" name="tone" value="casual"><div class="radio-opt-content"><div class="radio-opt-label">Casual</div><div class="radio-opt-sub">Relaxed and conversational — like texting a contact</div></div></div>
+        <div class="radio-opt" onclick="selectRadio('tone','professional',this)"><input type="radio" name="tone" value="professional"><div class="radio-opt-content"><div class="radio-opt-label">Professional</div><div class="radio-opt-sub">Polished and clear — business-like without being stiff</div></div></div>
+        <div class="radio-opt" onclick="selectRadio('tone','friendly',this)"><input type="radio" name="tone" value="friendly"><div class="radio-opt-content"><div class="radio-opt-label">Friendly</div><div class="radio-opt-sub">Warm and approachable — personal without being informal</div></div></div>
+        <div class="radio-opt" onclick="selectRadio('tone','direct',this)"><input type="radio" name="tone" value="direct"><div class="radio-opt-content"><div class="radio-opt-label">Direct</div><div class="radio-opt-sub">Straight to the point — no fluff, respects their time</div></div></div>
       </div>
     </div>
     <div class="field">
       <label class="field-label">Phrases you naturally use <span class="optional">(optional)</span></label>
-      <span class="field-hint">Words or phrases that sound like you. e.g. "just checking in", "wanted to loop back", "happy to hop on a call"</span>
-      <textarea id="q-phrases" placeholder="e.g. 'just wanted to touch base', 'let me know if you have questions'"></textarea>
+      <span class="field-hint">Words or phrases that sound like you. The AI will weave these in naturally.</span>
+      <textarea id="q-phrases" placeholder="e.g. 'just wanted to loop back', 'happy to hop on a quick call', 'let me know if you have any questions'"></textarea>
     </div>
     <div class="field">
-      <label class="field-label">Anything you NEVER want the AI to say? <span class="optional">(optional but important)</span></label>
-      <span class="field-hint">e.g. "Don't sound pushy", "Never say 'just'", "Don't use corporate buzzwords"</span>
-      <textarea id="q-never" placeholder="e.g. Don't use 'synergy', don't sound desperate, never say 'I wanted to reach out'"></textarea>
+      <label class="field-label">Anything you NEVER want the AI to say? <span class="optional">(optional — but important)</span></label>
+      <span class="field-hint">Hard rules the AI will always follow. Be specific — the more you tell it, the better.</span>
+      <textarea id="q-never" placeholder="e.g. Never say 'I wanted to reach out', don't sound desperate, avoid 'just checking in', never use corporate buzzwords like 'synergy' or 'circle back'"></textarea>
     </div>
   </div>
 
-  <!-- Section 4: Leads -->
+  <!-- SECTION 4: Leads -->
   <div class="section" id="section-4">
     <div class="section-eyebrow">Section 4 of 5</div>
     <div class="section-title">Your leads</div>
-    <div class="section-sub">The more the AI knows about who you're talking to, the more relevant and persuasive your emails become.</div>
+    <div class="section-sub">The more the AI knows about who you're talking to and what they care about, the more your emails will resonate with them specifically.</div>
 
     <div class="field">
       <label class="field-label">Who are you usually following up with? <span class="req">*</span></label>
-      <span class="field-hint">e.g. homeowners, small business owners, first-time buyers, HR managers</span>
-      <input type="text" id="q-who" placeholder="e.g. homeowners looking for insurance">
+      <input type="text" id="q-who" placeholder="e.g. homeowners looking for insurance, first-time homebuyers, small business owners, HR managers at mid-sized companies">
     </div>
     <div class="field">
       <label class="field-label">What problem are they trying to solve? <span class="req">*</span></label>
-      <span class="field-hint">e.g. lower their monthly premium, find a home in their budget, get a roof repaired fast</span>
-      <textarea id="q-problem" placeholder="They're trying to..."></textarea>
+      <span class="field-hint">This helps the AI write emails that speak to their actual pain — not just describe your service.</span>
+      <textarea id="q-problem" placeholder="e.g. They want to lower their monthly insurance premium without losing coverage&#10;e.g. They need to find a home before their lease ends&#10;e.g. They're losing deals because their follow-up is inconsistent"></textarea>
     </div>
     <div class="field">
-      <label class="field-label">What's the most common objection you hear? <span class="optional">(optional)</span></label>
-      <span class="field-hint">e.g. price, timing, "I need to think about it", "already working with someone else"</span>
-      <input type="text" id="q-objection" placeholder="e.g. They say it's too expensive or they need to think about it">
+      <label class="field-label">Most common objection you hear <span class="optional">(optional)</span></label>
+      <span class="field-hint">The AI can address this subtly in your emails — without being pushy.</span>
+      <input type="text" id="q-objection" placeholder="e.g. 'It's too expensive', 'I need to think about it', 'I'm already working with someone', 'Not the right time'">
     </div>
   </div>
 
-  <!-- Section 5: Strategy -->
+  <!-- SECTION 5: Strategy -->
   <div class="section" id="section-5">
     <div class="section-eyebrow">Section 5 of 5</div>
     <div class="section-title">Your follow-up strategy</div>
-    <div class="section-sub">Sets the defaults for how your system operates — so it works the way you work, not the other way around.</div>
+    <div class="section-sub">Sets the defaults for how your system operates — so it works the way you actually sell, not the other way around.</div>
 
     <div class="field">
       <label class="field-label">Which follow-up goal do you use most?</label>
-      <div class="radio-group" id="default-goal-group">
-        <div class="radio-opt" onclick="selectRadio('default-goal','quote')"><input type="radio" name="default-goal" value="quote"><label>Follow up on quote</label></div>
-        <div class="radio-opt" onclick="selectRadio('default-goal','reengage')"><input type="radio" name="default-goal" value="reengage"><label>Re-engage cold lead</label></div>
-        <div class="radio-opt" onclick="selectRadio('default-goal','response')"><input type="radio" name="default-goal" value="response"><label>Get a response</label></div>
-        <div class="radio-opt" onclick="selectRadio('default-goal','checkin')"><input type="radio" name="default-goal" value="checkin"><label>Final check-in</label></div>
+      <span class="field-hint">This becomes your default in the app — you can always change it per lead.</span>
+      <div class="radio-group">
+        <div class="radio-opt" onclick="selectRadio('default-goal','quote',this)">
+          <input type="radio" name="default-goal" value="quote">
+          <div class="radio-opt-content">
+            <div class="radio-opt-label">Follow up on quote</div>
+            <div class="radio-opt-sub">After sending a proposal or price</div>
+            <div class="radio-opt-insight">Your system will be tuned around deal stages — moving quotes toward decisions.</div>
+          </div>
+        </div>
+        <div class="radio-opt" onclick="selectRadio('default-goal','reengage',this)">
+          <input type="radio" name="default-goal" value="reengage">
+          <div class="radio-opt-content">
+            <div class="radio-opt-label">Re-engage cold lead</div>
+            <div class="radio-opt-sub">Bringing back someone who went quiet</div>
+            <div class="radio-opt-insight">Your system will prioritize low-pressure re-entry — reopening conversations without desperation.</div>
+          </div>
+        </div>
+        <div class="radio-opt" onclick="selectRadio('default-goal','response',this)">
+          <input type="radio" name="default-goal" value="response">
+          <div class="radio-opt-content">
+            <div class="radio-opt-label">Get a response</div>
+            <div class="radio-opt-sub">Just need them to reply</div>
+            <div class="radio-opt-insight">Your system will generate short, direct emails built to get any response — even a no.</div>
+          </div>
+        </div>
+        <div class="radio-opt" onclick="selectRadio('default-goal','checkin',this)">
+          <input type="radio" name="default-goal" value="checkin">
+          <div class="radio-opt-content">
+            <div class="radio-opt-label">Final check-in</div>
+            <div class="radio-opt-sub">Closing the loop before moving on</div>
+            <div class="radio-opt-insight">Your system will close with dignity — giving leads a respectful final out while leaving the door open.</div>
+          </div>
+        </div>
       </div>
     </div>
+
     <div class="field">
       <label class="field-label">How many follow-ups do you typically send before moving on?</label>
-      <div class="radio-group" id="followup-count-group">
-        <div class="radio-opt" onclick="selectRadio('followup-count','1to2')"><input type="radio" name="followup-count" value="1to2"><label>1–2</label></div>
-        <div class="radio-opt" onclick="selectRadio('followup-count','3to4')"><input type="radio" name="followup-count" value="3to4"><label>3–4</label></div>
-        <div class="radio-opt" onclick="selectRadio('followup-count','5plus')"><input type="radio" name="followup-count" value="5plus"><label>5 or more</label></div>
+      <div class="radio-group">
+        <div class="radio-opt" onclick="selectRadio('followup-count','1to2',this)"><input type="radio" name="followup-count" value="1to2"><div class="radio-opt-content"><div class="radio-opt-label">1–2</div><div class="radio-opt-sub">Quick and clean — move fast</div></div></div>
+        <div class="radio-opt" onclick="selectRadio('followup-count','3to4',this)"><input type="radio" name="followup-count" value="3to4"><div class="radio-opt-content"><div class="radio-opt-label">3–4</div><div class="radio-opt-sub">Standard follow-up cadence</div></div></div>
+        <div class="radio-opt" onclick="selectRadio('followup-count','5plus',this)"><input type="radio" name="followup-count" value="5plus"><div class="radio-opt-content"><div class="radio-opt-label">5 or more</div><div class="radio-opt-sub">Persistent — I stay in the game</div></div></div>
       </div>
     </div>
+
     <div class="field">
       <label class="field-label">What usually triggers your first follow-up? <span class="optional">(optional)</span></label>
-      <span class="field-hint">e.g. after sending a quote, after a showing, after an introductory call</span>
-      <input type="text" id="q-trigger" placeholder="e.g. After I send a quote">
+      <input type="text" id="q-trigger" placeholder="e.g. After I send a quote, after a showing, after an intro call, after a site visit">
     </div>
 
     <hr class="divider">
 
-    <div class="field">
-      <label class="field-label">Paste an example follow-up message you've sent before <span class="optional">(optional — but powerful)</span></label>
-      <span class="field-hint">This teaches the AI your exact tone and style faster than anything else. Even one example is enough.</span>
-      <textarea id="q-example" style="min-height:120px" placeholder="Hey John, just wanted to follow up on the quote I sent over..."></textarea>
+    <!-- Example email — hero treatment -->
+    <div class="example-field">
+      <div class="example-field-header">
+        <div class="example-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div>
+          <div class="example-field-title">Highest-value question on this form</div>
+          <div class="example-field-sub">Paste a real follow-up message you've sent before. One example teaches the AI your exact tone faster than every other question combined.</div>
+        </div>
+      </div>
+      <textarea id="q-example" placeholder="e.g. Hey John, just wanted to follow up on the quote I sent over earlier this week. I know you're busy — just wanted to make sure it didn't get buried. Happy to hop on a quick call if you have questions. Let me know either way. — Sarah"></textarea>
     </div>
   </div>
 
   <!-- Navigation -->
   <div class="nav" id="nav">
-    <button class="btn btn-ghost" id="btn-back" onclick="prevSection()" style="display:none">Back</button>
+    <button class="btn btn-ghost" id="btn-back" onclick="prevSection()" style="display:none">← Back</button>
     <div class="step-counter" id="step-counter">Step 1 of 5</div>
     <button class="btn btn-primary" id="btn-next" onclick="nextSection()">Continue →</button>
   </div>
 
   <!-- Confirmation screen -->
   <div class="confirm-screen" id="confirm-screen">
-    <div class="confirm-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#16a370" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <div class="confirm-top">
+      <div class="confirm-check">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#16a370" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="confirm-title">We've got everything we need.</div>
+      <div class="confirm-sub">Your follow-up system is being customized to match your business, your voice, and the way you sell. Here's what happens next:</div>
     </div>
-    <div class="confirm-title">You're all set.</div>
-    <div class="confirm-sub">We have everything we need to build your private LeadPulse. Here's what happens next:</div>
-    <div class="confirm-steps">
+
+    <div class="confirm-card">
+      <div class="confirm-card-title">What happens now</div>
       <div class="confirm-step">
-        <div class="confirm-step-num">1</div>
-        <div class="confirm-step-text"><strong>We review your answers</strong> and map them to your configuration — voice, tone, prompts, and signature.</div>
+        <div class="confirm-num">1</div>
+        <div class="confirm-step-text"><strong>We review your answers</strong> and map them to your LeadPulse configuration — voice, tone, prompts, and signature.</div>
       </div>
       <div class="confirm-step">
-        <div class="confirm-step-num">2</div>
-        <div class="confirm-step-text"><strong>We build your private version</strong> of LeadPulse — your branding, your industry, your language.</div>
+        <div class="confirm-num">2</div>
+        <div class="confirm-step-text"><strong>We build your private version</strong> — your branding, your industry language, your sign-off. Nobody else has access to it.</div>
       </div>
       <div class="confirm-step">
-        <div class="confirm-step-num">3</div>
-        <div class="confirm-step-text"><strong>We send you a live URL</strong> — your own private deployment. Nobody else has access to it.</div>
+        <div class="confirm-num">3</div>
+        <div class="confirm-step-text"><strong>We send you a live URL.</strong> Open it, add your leads, and start generating follow-up sequences immediately.</div>
       </div>
       <div class="confirm-step">
-        <div class="confirm-step-num">4</div>
-        <div class="confirm-step-text"><strong>Turnaround: 3–5 business days.</strong> We'll email you as soon as it's live.</div>
+        <div class="confirm-num">4</div>
+        <div class="confirm-step-text"><strong>Turnaround: 3–5 business days.</strong> We'll email you at <span id="confirm-email" style="color:#7c3aed;font-weight:600"></span> when it's ready.</div>
       </div>
     </div>
-    <div style="font-size:14px;color:#888;line-height:1.7">Questions? Reply to the email you received or reach out directly. We're here.</div>
+
+    <div class="confirm-note">Questions? Reply to the email you received from us. We're here.</div>
   </div>
 
 </div>
@@ -349,14 +442,13 @@
   let currentSection = 1;
   const totalSections = 5;
 
-  function selectRadio(name, value) {
+  function selectRadio(name, value, el) {
     document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
       r.checked = r.value === value;
       r.closest('.radio-opt').classList.toggle('selected', r.value === value);
     });
     if (name === 'signoff') {
-      const wrap = document.getElementById('signoff-custom-wrap');
-      wrap.classList.toggle('visible', value === 'custom');
+      document.getElementById('signoff-custom-wrap').classList.toggle('visible', value === 'custom');
     }
   }
 
@@ -365,7 +457,9 @@
     document.getElementById('progress-fill').style.width = pct + '%';
     for (let i = 1; i <= totalSections; i++) {
       const el = document.getElementById('pl-' + i);
-      el.classList.toggle('active', i === currentSection);
+      el.classList.remove('active', 'done');
+      if (i === currentSection) el.classList.add('active');
+      else if (i < currentSection) el.classList.add('done');
     }
     document.getElementById('step-counter').textContent = `Step ${currentSection} of ${totalSections}`;
     document.getElementById('btn-back').style.display = currentSection > 1 ? 'inline-block' : 'none';
@@ -374,36 +468,27 @@
 
   function validateSection(n) {
     if (n === 1) {
-      const name = document.getElementById('q-name').value.trim();
+      if (!document.getElementById('q-name').value.trim()) { alert('Please enter your full name.'); return false; }
       const email = document.getElementById('q-email').value.trim();
-      if (!name) { alert('Please enter your full name.'); return false; }
       if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return false; }
     }
     if (n === 2) {
-      const sell = document.getElementById('q-what-sell').value.trim();
-      const industry = document.getElementById('q-industry').value.trim();
-      if (!sell) { alert('Please tell us what you sell.'); return false; }
-      if (!industry) { alert('Please enter your industry or niche.'); return false; }
-    }
-    if (n === 4) {
-      const who = document.getElementById('q-who').value.trim();
-      const problem = document.getElementById('q-problem').value.trim();
-      if (!who) { alert('Please describe who you follow up with.'); return false; }
-      if (!problem) { alert('Please describe the problem your leads are trying to solve.'); return false; }
+      if (!document.getElementById('q-what-sell').value.trim()) { alert('Please tell us what you sell.'); return false; }
+      if (!document.getElementById('q-industry').value.trim()) { alert('Please enter your industry or niche.'); return false; }
     }
     if (n === 3) {
-      const style = document.getElementById('q-style').value.trim();
-      if (!style) { alert('Please describe your communication style.'); return false; }
+      if (!document.getElementById('q-style').value.trim()) { alert('Please describe your communication style.'); return false; }
+    }
+    if (n === 4) {
+      if (!document.getElementById('q-who').value.trim()) { alert('Please tell us who you follow up with.'); return false; }
+      if (!document.getElementById('q-problem').value.trim()) { alert('Please describe the problem your leads are trying to solve.'); return false; }
     }
     return true;
   }
 
   function nextSection() {
     if (!validateSection(currentSection)) return;
-    if (currentSection === totalSections) {
-      submitForm();
-      return;
-    }
+    if (currentSection === totalSections) { submitForm(); return; }
     document.getElementById('section-' + currentSection).classList.remove('active');
     currentSection++;
     document.getElementById('section-' + currentSection).classList.add('active');
@@ -426,10 +511,11 @@
   }
 
   function submitForm() {
+    const email = document.getElementById('q-email').value.trim();
     const data = {
       name: document.getElementById('q-name').value.trim(),
       company: document.getElementById('q-company').value.trim(),
-      email: document.getElementById('q-email').value.trim(),
+      email,
       phone: document.getElementById('q-phone').value.trim(),
       signoffStyle: getRadioValue('signoff'),
       signoffCustom: document.getElementById('q-signoff-custom').value.trim(),
@@ -452,12 +538,14 @@
       submittedAt: new Date().toISOString()
     };
 
-    localStorage.setItem('lp_questionnaire_' + Date.now(), JSON.stringify(data));
-    console.log('LeadPulse Questionnaire Submission:', JSON.stringify(data, null, 2));
+    localStorage.setItem('lp_q_' + Date.now(), JSON.stringify(data));
+    console.log('=== LeadPulse Questionnaire Submission ===');
+    console.log(JSON.stringify(data, null, 2));
 
     document.getElementById('section-' + currentSection).classList.remove('active');
     document.getElementById('nav').style.display = 'none';
     document.getElementById('progress-wrap').style.display = 'none';
+    document.getElementById('confirm-email').textContent = email;
     document.getElementById('confirm-screen').classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
